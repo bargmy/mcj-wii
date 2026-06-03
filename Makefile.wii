@@ -1,0 +1,42 @@
+ifeq ($(strip $(DEVKITPPC)),)
+$(error "Please set DEVKITPPC in your environment. export DEVKITPPC=<path to>devkitPPC")
+endif
+
+include $(DEVKITPPC)/wii_rules
+
+TARGET = rubydung
+CC = powerpc-eabi-gcc
+CXX = powerpc-eabi-g++
+AR = powerpc-eabi-ar
+OBJCOPY = powerpc-eabi-objcopy
+
+# Include paths
+INCLUDE = -I. -I$(DEVKITPRO)/libogc/include -I$(DEVKITPRO)/portlibs/wii/include -I$(DEVKITPRO)/portlibs/ppc/include
+
+# Compile flags for Wii
+CFLAGS = -O2 -mrvl -mcpu=750 -meabi -mhard-float -ffunction-sections -fdata-sections -D__WII__ $(INCLUDE) -Wall
+
+LIBS = -L$(DEVKITPRO)/portlibs/wii/lib -L$(DEVKITPRO)/portlibs/ppc/lib -L$(DEVKITPRO)/libogc/lib/wii \
+       -lglut -lGLU -lopengx -lfat -lwiiuse -lwiikeyboard -lbte -logc -lz -lm
+
+# Source files
+SRC = vec3.c aabb.c tesselator.c textures.c tile.c \
+      level.c frustum.c chunk.c level_renderer.c \
+      entity.c player.c character.c timer.c \
+      input.c font.c rubydung.c
+
+OBJ = $(SRC:.c=.o)
+
+all: $(TARGET).dol
+
+$(TARGET).dol: $(TARGET).elf
+	elf2dol $< $@
+
+$(TARGET).elf: $(OBJ)
+	$(CC) -g -mrvl -mcpu=750 -meabi -mhard-float -Wl,-Map,$(TARGET).map -o $@ $(OBJ) $(LIBS)
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ) $(TARGET).elf $(TARGET).dol $(TARGET).map
