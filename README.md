@@ -2,12 +2,12 @@
 
 This is a native port of the rd-132328 C codebase (originally derived from the `mcj-portc` codebase) to the Nintendo Wii. 
 
-The game runs at a smooth **60 FPS** on real Wii hardware and the Dolphin Emulator, featuring custom optimized vertex array rendering and hardware clock timing adjustments.
+The game runs at a smooth **30 FPS** on real Wii hardware and the Dolphin Emulator, featuring custom optimized vertex array rendering and hardware clock timing adjustments.
 
 ---
 
 ## Features & Wii Optimizations
-* **Smooth 60 FPS Performance**: Migrated all immediate mode rendering (`glBegin`/`glEnd`) to Client-Side Vertex Arrays, avoiding GPU FIFO queue desyncs under the OpenGX wrapper.
+* **Smooth 30 FPS Performance**: Migrated all immediate mode rendering (`glBegin`/`glEnd`) to Client-Side Vertex Arrays, avoiding GPU FIFO queue desyncs under the OpenGX wrapper.
 * **Xbox / Wii Controller Scheme**: Designed specifically for comfortable console controls:
   * **Nunchuk Analog Stick**: Controls camera look rotation (Pitch and Yaw) with smooth deadzones.
   * **Wii Remote D-Pad**: Controls player movement (Forward, Backward, Strafe Left/Right).
